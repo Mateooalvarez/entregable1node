@@ -1,4 +1,4 @@
-import { Repairs, User } from "../../data"
+import { Repairs } from "../../data"
 
 
 enum RepairsStatus {

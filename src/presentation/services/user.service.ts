@@ -20,7 +20,7 @@ export class UserService {
     const user = new User()
 
 
-    user.name = user.name.toLocaleLowerCase().trim()
+    user.name = userData.name.toLocaleLowerCase().trim()
     user.email = userData.email.toLocaleLowerCase().trim()
     user.password = userData.password.trim()
     user.rol = UseRole.CLIENT

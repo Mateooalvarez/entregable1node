@@ -39,11 +39,11 @@ export class User extends BaseEntity {
     password: string
 
     @Column({
-        enum: UseRole,
-        nullable: false,
-        default: UseRole.CLIENT
+        type  : "enum",
+        enum : UseRole,
+        default : UseRole.CLIENT
     })
-    rol: UseRole
+    role  : UseRole | string;
 
     @Column({
         enum: UserStatus,

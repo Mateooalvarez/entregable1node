@@ -55,11 +55,16 @@ export class RepairsController {
       if (error) return res.status(422).json({ message: error })
       this.repairsServices.updateRepair(updateRepair!, +id)
          .then(repairs => res.status(200).json(repairs))
-         .catch((error:unknown)=> res.status(500).json(error))
+         .catch((error: unknown) => res.status(500).json(error))
    }
 
    deleteRepair = (req: Request, res: Response) => {
-
+      const { id } = req.params
+      if (isNaN(+id)) {
+         return res.status(404).json({ message: ' El id debe ser un numero' })
+      }
+      this.repairsServices.deleteRepair(+id)
+         .then(deleteRepairs => res.status(204).json(deleteRepairs))
+         .catch((error: unknown) => res.status(500).json(error))
    }
-
 }

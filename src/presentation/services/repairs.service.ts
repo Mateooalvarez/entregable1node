@@ -68,4 +68,15 @@ export class repairsService {
         throw CustomError.internalServer("Something went wrong")
      }
     }
+
+    async deleteRepair(id: number){
+        const repair = await this.findOneRepair(id);
+
+        repair!.status = RepairsStatus.CANCELLED
+        try {
+            return repair?.save()
+        } catch (error) {
+            throw CustomError.internalServer("Something went wrong")
+        }
+    }
 }

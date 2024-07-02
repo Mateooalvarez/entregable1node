@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import { UserService } from "../services/user.service"
 import { CustomError } from "../../domain/errors/custom-errors"
 import { UpdateUserDto } from "../../domain/dtos/users/update-user-dto"
+import { RegisterDto } from "../../domain/dtos/users/register-user-dto"
 
 export class UsersController {
 
@@ -20,15 +21,12 @@ private handleErrror = (error:unknown, res:Response)=>{
 }
 
 createUser = (req: Request, res: Response) => {
-   const { name, email, password } = req.body;
+  const [error, createUserDto] = RegisterDto.create(req.body)
+  if (error) return res.status(400).json({message: error}) 
 
-   this.userService.createUser({ name, email, password })
-   .then((user) => {
-      res.status(201).json(user)
-   })
-   .catch((error) => {
-      res.status(500).json(error)
-   })
+   this.userService.createUser(createUserDto!)
+   .then(user => res.status(200).json(user))
+   .catch((error: unknown) => this.handleErrror(error, res) )
 }
 
 findAllUsers = (req: Request, res: Response) => {

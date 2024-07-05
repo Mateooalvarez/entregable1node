@@ -80,4 +80,12 @@ export class UserService {
             throw CustomError.internalServer("Something went very wrong! 🧨")
         }
      }
+
+     async findUserByEmailAndPassword(email: string, password: string): Promise<User | null> {
+        const user = await this.findUserByEmailAndPassword(email, password)
+        if (!user) {
+            return null
+        }
+        return user
+     }
 }

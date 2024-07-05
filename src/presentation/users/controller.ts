@@ -12,6 +12,25 @@ constructor(
 
 }
 
+loginUser = async (req: Request, res: Response) => {
+   try {
+      const { email, password} = req.body;
+
+      if (!email || !password) {
+         return res.status(400).json({message: 'Email and password required'})
+      }
+      const user = await this.userService.findUserByEmailAndPassword(email, password)
+
+      if (!user) {
+         return res.status(401).json({message: 'invalid credentials'})
+      }
+      return res.status(200).json(user)
+   } catch (error) {
+     console.error('error en el inicio de sesion:', error)
+     return res.status(500).json({message: 'internal server error'})
+   }
+}
+
 private handleErrror = (error:unknown, res:Response)=>{
 
    if( error instanceof CustomError ){
@@ -55,7 +74,7 @@ updateUser  = (req: Request, res: Response) => {
    const {id} = req.params
    const [error, updateUseById]= UpdateUserDto.update(req.body)
    if(isNaN(+id)){
-       return res.status(400).json({message : "El is debe ser un numero"})
+       return res.status(400).json({message : "El id debe ser un numero"})
    }
 
    if(error) return res.status(422).json({messge : error})

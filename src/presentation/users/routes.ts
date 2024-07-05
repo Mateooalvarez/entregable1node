@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { UsersController } from "./controller";
 import { UserService } from "../services/user.service";
+import { authenticateToken } from "../middleware/auth-middleware";
+
 
 export class UsersRoutes {
 
@@ -10,11 +12,12 @@ static get routes(): Router {
     const userService = new UserService();
     const controller = new UsersController(userService);
 
-    router.get('/', controller.findAllUsers)
     router.post('/', controller.createUser)
-    router.get('/:id', controller.findAllUsers)
-    router.patch('/:id', controller.updateUser)
-    router.delete('/:id', controller.deleteUser)
+
+    router.get('/', authenticateToken, controller.findAllUsers)
+    router.get('/:id', authenticateToken, controller.findAllUsers)
+    router.patch('/:id', authenticateToken, controller.updateUser)
+    router.delete('/:id', authenticateToken, controller.deleteUser)
 
     return router
 }

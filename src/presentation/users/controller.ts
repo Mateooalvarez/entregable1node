@@ -8,9 +8,7 @@ export class UsersController {
 
 constructor(
   private readonly userService: UserService
-){
-
-}
+){}
 
 loginUser = async (req: Request, res: Response) => {
    try {

@@ -21,7 +21,7 @@ export class repairsService {
 
         repair.date = repairData.date;
         repair.status = RepairsStatus.PENDING;
-        repair.user_id = repairData.usrrId;
+        repair.user_id = repairData.userId;
 
         try {
             return await repair.save()

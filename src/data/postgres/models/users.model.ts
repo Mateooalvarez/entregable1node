@@ -1,4 +1,5 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Repairs } from "./repairs.model";
 
 enum UseRole {
     EMPLOYEE = 'EMPLOYEE',
@@ -51,6 +52,9 @@ export class User extends BaseEntity {
         default: UserStatus.ACTIVE
     })
     status: UserStatus
+
+    @OneToMany(() => Repairs, (repairs) => repairs.user)
+    repairs: Repairs[]
 
     @CreateDateColumn()
     created_at: Date

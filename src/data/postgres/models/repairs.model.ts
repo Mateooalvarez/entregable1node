@@ -1,4 +1,5 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "./users.model";
 
 
 enum RepairsStatus {
@@ -26,12 +27,9 @@ export class Repairs extends BaseEntity {
         default: RepairsStatus.PENDING
     })
     status: RepairsStatus
-    
-    @Column({
-        type: 'int',
-        nullable: false
-    })
-    user_id: number
+
+    @ManyToOne(() => User, (user) => user.repairs)
+    user: User
 
     @CreateDateColumn()
     created_at: Date

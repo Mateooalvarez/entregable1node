@@ -18,9 +18,6 @@ export class Repairs extends BaseEntity{
     })
     status : Status | string
 
-    @Column()
-    user_id : number;
-
     @Column({
         type : "varchar", 
         length : 60,

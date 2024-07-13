@@ -5,6 +5,7 @@ import { UsersRoutes } from "./users/routes";
 export class AppRoutes {
 
 static get routes(): Router {
+    
     const router = Router();
 
     router.use('/api/v1/users', UsersRoutes.routes)

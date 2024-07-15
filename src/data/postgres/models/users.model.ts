@@ -49,8 +49,7 @@ export class User extends BaseEntity {
     @Column({
         enum: UserStatus,
         nullable: false,
-        default: UserStatus.ACTIVE
-    })
+        default: UserStatus.ACTIVE no  })
     status: UserStatus
 
     @OneToMany(() => Repairs, (repairs) => repairs.user)
@@ -62,3 +61,8 @@ export class User extends BaseEntity {
     @CreateDateColumn()
     updated_at: Date
 }
+
+@BeforeInsert()
+    encryptPassword(){
+        this.password =  bcryptAdapter.hash(this.password)
+    };

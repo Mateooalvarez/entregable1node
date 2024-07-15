@@ -1,5 +1,6 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Repairs } from "./repairs.model";
+import { bcryptAdapter } from "../../../config";
 
 enum UseRole {
     EMPLOYEE = 'EMPLOYEE',

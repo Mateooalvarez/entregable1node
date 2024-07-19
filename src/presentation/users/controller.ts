@@ -3,6 +3,7 @@ import { UserService } from "../services/user.service"
 import { CustomError } from "../../domain/errors/custom-errors"
 import { UpdateUserDto } from "../../domain/dtos/users/update-user-dto"
 import { RegisterDto } from "../../domain/dtos/users/register-user-dto"
+import { LoginUserDto } from "../../domain/dtos/users/login-user-dto"
 
 export class UsersController {
 
@@ -10,23 +11,16 @@ constructor(
   private readonly userService: UserService
 ){}
 
-loginUser = async (req: Request, res: Response) => {
-   try {
-      const { email, password} = req.body;
+loginUser =  (req: Request, res: Response) => {
+   const [error, loginUserDto] = LoginUserDto.login(req.body)
 
-      if (!email || !password) {
-         return res.status(400).json({message: 'Email and password required'})
-      }
-      const user = await this.userService.findUserByEmailAndPassword(email, password)
+   if (error) return res.status(422).json(error)
 
-      if (!user) {
-         return res.status(401).json({message: 'invalid credentials'})
-      }
-      return res.status(200).json(user)
-   } catch (error) {
-     console.error('error en el inicio de sesion:', error)
-     return res.status(500).json({message: 'internal server error'})
-   }
+   this.userService.loginUser(loginUserDto!)
+
+   .then(user => res.status(202).json(user))
+   .catch(error => this.handleErrror(error, res))
+
 }
 
 private handleErrror = (error:unknown, res:Response)=>{

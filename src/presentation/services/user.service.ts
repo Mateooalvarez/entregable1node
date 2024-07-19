@@ -1,4 +1,7 @@
+import { bcryptAdapter } from "../../config/Bycript.adapter"
+import { JwtAdapter } from "../../config/jwt.adapter"
 import { User } from "../../data"
+import { LoginUserDto } from "../../domain/dtos/users/login-user-dto"
 import { UpdateUserDto } from "../../domain/dtos/users/update-user-dto"
 import { CustomError } from "../../domain/errors/custom-errors"
 
@@ -87,5 +90,32 @@ export class UserService {
             return null
         }
         return user
+     }
+
+     async loginUser(loginUsers: LoginUserDto){
+        const user = await User.findOne({
+            where:{
+                email: loginUsers.email,
+                status: UserStatus.ACTIVE,
+            }
+        })
+        if (!user) throw CustomError.unAuthorized('invalid credentials')
+            const comparatepassword = bcryptAdapter.compare(loginUsers.password, user.password)
+
+        if (!comparatepassword)  throw CustomError.unAuthorized('invalid password')
+
+        const token = await JwtAdapter.generateToken({id: user.id})
+
+        if (!token) throw CustomError.unAuthorized('error build create token')
+
+        return {
+            token: token,
+            user: {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                role: user.role
+            }
+            }
      }
 }

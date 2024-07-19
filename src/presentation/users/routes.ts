@@ -14,6 +14,8 @@ static get routes(): Router {
 
     router.post('/', controller.createUser)
 
+    router.post('/login', controller.loginUser)
+
     router.get('/', authenticateToken, controller.findAllUsers)
     router.get('/:id', authenticateToken, controller.findAllUsers)
     router.patch('/:id', authenticateToken, controller.updateUser)

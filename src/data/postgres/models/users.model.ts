@@ -1,5 +1,6 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, BeforeInsert, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Repairs } from "./repairs.model";
+import { bcryptAdapter } from "../../../config/Bycript.adapter";
 
 enum UseRole {
     EMPLOYEE = 'EMPLOYEE',
@@ -61,4 +62,11 @@ export class User extends BaseEntity {
 
     @CreateDateColumn()
     updated_at: Date
+
+    @BeforeInsert()
+    encriptPassword(){
+        this.password = bcryptAdapter.hash(this.password)
+    }
 }
+
+  

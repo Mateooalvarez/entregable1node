@@ -41,11 +41,11 @@ export class User extends BaseEntity {
     password: string
 
     @Column({
-        type  : "enum",
-        enum : UseRole,
-        default : UseRole.CLIENT
+        type: "enum",
+        enum: UseRole,
+        default: UseRole.CLIENT
     })
-    role  : UseRole | string;
+    role: UseRole | string;
 
     @Column({
         enum: UserStatus,
@@ -64,9 +64,8 @@ export class User extends BaseEntity {
     updated_at: Date
 
     @BeforeInsert()
-    encriptPassword(){
+    encryptPassword() {
         this.password = bcryptAdapter.hash(this.password)
-    }
+    };
 }
 
-  
